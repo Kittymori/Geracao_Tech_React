@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+
+// Lazy load dos componentes de página
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const UserProfile = lazy(() => import('./pages/UserProfile'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout>
+        <Suspense fallback={<div>Carregando...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/user/:id" element={<UserProfile />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </Layout>
+    </Router>
   );
 }
 
